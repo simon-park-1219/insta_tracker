@@ -25,7 +25,12 @@ class MockScraper(BaseScraper):
     each time to simulate real follower/following churn.
     """
 
-    _state: dict[str, dict[str, set[str]]] = {}
+    def __init__(self) -> None:
+        self._state: dict[str, dict[str, set[str]]] = {}
+
+    def reset(self) -> None:
+        """Clear all cached state. Useful for testing."""
+        self._state.clear()
 
     def get_profile_data(self, username: str) -> ScraperResult:
         if username not in self._state:

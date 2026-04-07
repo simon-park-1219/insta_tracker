@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/header";
 import { getToken } from "@/lib/auth";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import { getSettings, updateSettings } from "@/lib/api";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -20,10 +19,7 @@ export default function SettingsPage() {
       router.push("/login");
       return;
     }
-    fetch(`${API_URL}/api/settings`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((r) => r.json())
+    getSettings(token)
       .then((data) => {
         setEmailEnabled(data.notification_email_enabled);
         setLoading(false);
@@ -37,14 +33,7 @@ export default function SettingsPage() {
     setSaving(true);
     setMessage("");
     try {
-      await fetch(`${API_URL}/api/settings`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ notification_email_enabled: emailEnabled }),
-      });
+      await updateSettings(token, { notification_email_enabled: emailEnabled });
       setMessage("Settings saved!");
     } catch {
       setMessage("Failed to save settings.");

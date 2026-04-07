@@ -80,6 +80,13 @@ export const markNotificationRead = (token: string, id: string) =>
 export const markAllNotificationsRead = (token: string) =>
   fetchApi("/api/notifications/read-all", { token, method: "POST" });
 
+// Settings
+export const getSettings = (token: string) =>
+  fetchApi<Settings>("/api/settings", { token });
+
+export const updateSettings = (token: string, data: Partial<Settings>) =>
+  fetchApi<Settings>("/api/settings", { token, method: "PATCH", body: JSON.stringify(data) });
+
 // Types
 export interface Account {
   id: string;
@@ -124,4 +131,8 @@ export interface Notification {
   is_read: boolean;
   created_at: string;
   change_event_id: string | null;
+}
+
+export interface Settings {
+  notification_email_enabled: boolean;
 }

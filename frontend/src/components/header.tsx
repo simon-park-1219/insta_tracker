@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Bell, LogOut } from "lucide-react";
+import { Bell, LogOut, Settings } from "lucide-react";
 import { getToken, removeToken } from "@/lib/auth";
 import { listNotifications, markAllNotificationsRead, type Notification } from "@/lib/api";
 
@@ -86,6 +86,14 @@ export default function Header() {
               </div>
             )}
           </div>
+
+          <Link
+            href="/settings"
+            className="p-2 text-gray-500 hover:text-gray-700 transition"
+            title="Settings"
+          >
+            <Settings size={20} />
+          </Link>
 
           <button
             onClick={handleLogout}
